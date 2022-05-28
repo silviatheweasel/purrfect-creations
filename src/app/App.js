@@ -9,6 +9,8 @@ import {
   getRecentOrders 
 } from "../utilities/methods";
 
+import { RecentOrdersTableRow, RecentOrdersHeaderRow } from "../modules/RecentOrdersTableRow";
+
 function App() {
   const [orders, setOrders] = useState([]);
   const [isError, setIsError] = useState(false);
@@ -33,6 +35,20 @@ function App() {
     return <p>Sorry, there has been an error loading data, please try again later.</p>
   }
 
+  const createRecentOrdersTable = () => {
+    const recentOrders = getRecentOrders(orders, 5);
+    if (recentOrders) {
+      return (<table>
+        <thead>
+          <RecentOrdersHeaderRow order={recentOrders[0]}/>
+        </thead>
+        <tbody>
+          {recentOrders.map(order => <RecentOrdersTableRow order={order}/>)}
+        </tbody>
+      </table>)
+    }
+  }
+
   return (
     <div className="App">
       <header>Purrfect Creations</header>
@@ -55,12 +71,10 @@ function App() {
             <th>Revenue</th>
             <td>{getRevenue(orders)}</td>
           </tr>
-          <tr>
-            <th>Most Recent Orders</th>
-            {/* <td>{getRecentOrders(orders, 5)}</td> */}
-          </tr>
           </tbody>
-        </table>   
+        </table>
+        <div>Recent Orders</div>
+        {createRecentOrdersTable()}
       </main>
     </div>
   );

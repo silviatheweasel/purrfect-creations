@@ -45,4 +45,5 @@ export const getRecentOrders = (orders, numOfOrders) => {
       }
       return orders.records.sort(compare).slice(0, numOfOrders);
     }
+    return "";
   }

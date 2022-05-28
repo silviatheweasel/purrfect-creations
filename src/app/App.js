@@ -10,10 +10,12 @@ import {
 } from "../utilities/methods";
 
 import { RecentOrdersTableRow, RecentOrdersHeaderRow } from "../modules/RecentOrdersTableRow";
+import { SummaryTableRow } from "../modules/SummaryTableRow";
 
 function App() {
   const [orders, setOrders] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [selectValue, setSelectValue] = useState({value: "5"});
 
   useEffect(() => {
     const retriveData = async () => {
@@ -29,14 +31,14 @@ function App() {
       }
     }
     retriveData();
-  }, []);
+  }, [selectValue]);
 
   if (isError) {
     return <p>Sorry, there has been an error loading data, please try again later.</p>
   }
 
   const createRecentOrdersTable = () => {
-    const recentOrders = getRecentOrders(orders, 5);
+    const recentOrders = getRecentOrders(orders, parseInt(selectValue.value));
     if (recentOrders) {
       return (<table>
         <thead>
@@ -49,31 +51,46 @@ function App() {
     }
   }
 
+  const handleChange = (event) => {
+    setSelectValue({value: event.target.value});
+    event.preventDefault();
+  }
+
   return (
     <div className="App">
-      <header>Purrfect Creations</header>
+      <header>
+        <h1>Purrfect Creations Tracker</h1>
+      </header>
       <main>
         <table>
           <tbody>
-          <tr>
-            <th>Total Orders</th>
-            <td>{getTotalOrders(orders)}</td>
-          </tr>
-          <tr>
-            <th>Total Orders This Month</th>
-            <td>{getOrdersThisMonth(orders)}</td>
-          </tr>
-          <tr>
-            <th>Orders in Progress</th>
-            <td>{getOrdersInProgress(orders)}</td>
-          </tr>
-          <tr>
-            <th>Revenue</th>
-            <td>{getRevenue(orders)}</td>
-          </tr>
+          <SummaryTableRow 
+            title="Total Orders"
+            value={getTotalOrders(orders)}
+          />
+          <SummaryTableRow 
+            title="Total Orders This Month"
+            value={getOrdersThisMonth(orders)}
+          />
+          <SummaryTableRow 
+            title="Orders in Progress"
+            value={getOrdersInProgress(orders)}
+          />          
+          <SummaryTableRow 
+            title="Revenue"
+            value={getRevenue(orders)}
+          />         
           </tbody>
         </table>
-        <div>Recent Orders</div>
+        <div>
+          <h2>Recent Orders</h2>
+          <select value={selectValue.value} onChange={handleChange}>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
         {createRecentOrdersTable()}
       </main>
     </div>

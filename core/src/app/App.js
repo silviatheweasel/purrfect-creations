@@ -67,26 +67,28 @@ function App() {
         <h1>Purrfect Creations Order Summary</h1>
       </header>
       <main>
-        <table className="summary-table">
-          <tbody>
-            <SummaryTableRow 
-              title="Total Orders"
-              value={getTotalOrders(orders)}
-            />
-            <SummaryTableRow 
-              title="Total Orders This Month"
-              value={getOrdersThisMonth(orders)}
-            />
-            <SummaryTableRow 
-              title="Orders in Progress"
-              value={getOrdersInProgress(orders)}
-            />          
-            <SummaryTableRow 
-              title="Revenue"
-              value={getRevenue(orders)}
-            />         
-          </tbody>
-        </table>
+        <div className="summary-table-wrapper">
+          <table className="summary-table">
+            <tbody>
+              <SummaryTableRow 
+                title="Total Orders"
+                value={getTotalOrders(orders)}
+              />
+              <SummaryTableRow 
+                title="Total Orders This Month"
+                value={getOrdersThisMonth(orders)}
+              />
+              <SummaryTableRow 
+                title="Orders in Progress"
+                value={getOrdersInProgress(orders)}
+              />          
+              <SummaryTableRow 
+                title="Revenue"
+                value={getRevenue(orders)}
+              />         
+            </tbody>
+          </table>
+        </div>
         <div className="recent-orders-wrapper">
           <div className="order-selector-wrapper">
             <h2>Recent Orders</h2>

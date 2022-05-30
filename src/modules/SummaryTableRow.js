@@ -1,6 +1,6 @@
 export const SummaryTableRow = ({title, value}) => {
     return (<tr>
-        <th>{title}</th>
-        <td>{value}</td>
+        <th class="summary-table-header">{title}</th>
+        <td class="summary-table-cell">{value}</td>
       </tr>)
 }

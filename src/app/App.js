@@ -6,7 +6,7 @@ import {
   getOrdersThisMonth, 
   getOrdersInProgress,
   getRevenue,
-  getRecentOrders 
+  getRecentOrders
 } from "../utilities/methods";
 
 import { RecentOrdersTableRow, RecentOrdersHeaderRow } from "../modules/RecentOrdersTableRow";
@@ -16,6 +16,7 @@ function App() {
   const [orders, setOrders] = useState([]);
   const [isError, setIsError] = useState(false);
   const [selectValue, setSelectValue] = useState({value: "5"});
+  const [recordsToDisplay, setRecordesToDisplay] = useState([]);
 
   useEffect(() => {
     const retriveData = async () => {
@@ -23,29 +24,30 @@ function App() {
       const apiKey = process.env.REACT_APP_API_KEY;
       const endpoint = url + "/Orders?api_key=" + apiKey;
       try {
-          const data = await fetch(endpoint);
-          const jsonData = await data.json();
-          setOrders(jsonData);
+        const data = await fetch(endpoint);
+        const jsonData = await data.json();
+        const recentOrders = getRecentOrders(jsonData, parseInt(selectValue.value));
+        setOrders(jsonData);
+        setRecordesToDisplay(recentOrders);
       } catch(error) {
-          setIsError(true);
+        setIsError(true);
       }
     }
     retriveData();
-  }, [selectValue]);
+  }, [selectValue, recordsToDisplay]);
 
   if (isError) {
     return <p>Sorry, there has been an error loading data, please try again later.</p>
   }
 
-  const createRecentOrdersTable = () => {
-    const recentOrders = getRecentOrders(orders, parseInt(selectValue.value));
-    if (recentOrders) {
-      return (<table>
-        <thead>
-          <RecentOrdersHeaderRow order={recentOrders[0]}/>
+  const createRecentOrdersTable = (recordsToDisplay) => {
+    if (recordsToDisplay) {
+      return (<table class="recent-orders-table">
+        <thead class="recent-records-header">
+          <RecentOrdersHeaderRow order={recordsToDisplay[0]}/>
         </thead>
         <tbody>
-          {recentOrders.map(order => <RecentOrdersTableRow order={order}/>)}
+          {recordsToDisplay.map(order => <RecentOrdersTableRow order={order}/>)}
         </tbody>
       </table>)
     }
@@ -59,10 +61,10 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>Purrfect Creations Tracker</h1>
+        <h1>Purrfect Creations Order Summary</h1>
       </header>
       <main>
-        <table>
+        <table class="summary-table">
           <tbody>
           <SummaryTableRow 
             title="Total Orders"
@@ -82,16 +84,20 @@ function App() {
           />         
           </tbody>
         </table>
-        <div>
-          <h2>Recent Orders</h2>
-          <select value={selectValue.value} onChange={handleChange}>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-          </select>
+        <div class="recent-orders-wrapper">
+          <div class="order-selector-wrapper">
+            <h2>Recent Orders</h2>
+            <select value={selectValue.value} onChange={handleChange}>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+          <div class="recent-orders-container">
+            {recordsToDisplay.length > 0 && createRecentOrdersTable(recordsToDisplay)}
+          </div>
         </div>
-        {createRecentOrdersTable()}
       </main>
     </div>
   );

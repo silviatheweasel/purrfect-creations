@@ -1,8 +1,8 @@
 export const getTotalOrders = (orders) => {
-    if (orders.records) {
-      return orders.records.length;
-    } 
-    return "";
+  if (orders.records) {
+    return orders.records.length;
+  } 
+  return "";
 }
 
 export const getOrdersThisMonth = (orders) => {
@@ -17,33 +17,33 @@ export const getOrdersThisMonth = (orders) => {
 }
 
 export const getOrdersInProgress = (orders) => {
-    if (orders.records) {
-      return orders.records.filter(orderObj => orderObj.fields.order_status === "in_progress").length;
-    }
-    return "";
+  if (orders.records) {
+    return orders.records.filter(orderObj => orderObj.fields.order_status === "in_progress").length;
+  }
+  return "";
 }
 
 export const getRevenue = (orders) => {
-    if (orders.records) {
-      const prices = orders.records.map(orderObj => Number(orderObj.fields.price));
-      const revenue = prices.reduce((prevValue, currentValue) => prevValue + currentValue).toFixed(2);
-      return revenue;
-    }
-    return "";
+  if (orders.records) {
+    const prices = orders.records.map(orderObj => Number(orderObj.fields.price));
+    const revenue = prices.reduce((prevValue, currentValue) => prevValue + currentValue).toFixed(2);
+    return revenue;
+  }
+  return "";
   }
 
 export const getRecentOrders = (orders, numOfOrders) => {
-    if (orders.records) {
-      const compare = (a, b) => {
-        if (Date.parse(a.fields.order_placed) < Date.parse(b.fields.order_placed)) {
-          return 1;
-        } else if (Date.parse(a.fields.order_placed) > Date.parse(b.fields.order_placed)) {
-          return -1;
-        } else {
-          return 0;
-        }
+  if (orders.records) {
+    const compare = (a, b) => {
+      if (Date.parse(a.fields.order_placed) < Date.parse(b.fields.order_placed)) {
+        return 1;
+      } else if (Date.parse(a.fields.order_placed) > Date.parse(b.fields.order_placed)) {
+        return -1;
+      } else {
+        return 0;
       }
-      return orders.records.sort(compare).slice(0, numOfOrders);
     }
-    return "";
+    return orders.records.sort(compare).slice(0, numOfOrders);
   }
+  return "";
+}

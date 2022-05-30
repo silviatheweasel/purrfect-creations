@@ -7,7 +7,7 @@ export const RecentOrdersTableRow = (order) => {
 
 export const RecentOrdersHeaderRow = (order) => {
     let keys = Object.keys(order.order.fields);
-    return (<tr>
+    return (<tr class="recent-orders-header-row">
         {keys.map((key, i) => <th key={"recentOrdersHeader" + i}>{key.replace("_", " ").toUpperCase()}</th>)}
     </tr>)
 }

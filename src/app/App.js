@@ -18,6 +18,7 @@ function App() {
   const [selectValue, setSelectValue] = useState({value: "5"});
   const [recordsToDisplay, setRecordesToDisplay] = useState([]);
 
+  //Retriving data then saving retrieved records into state "Orders" and sliced records into state "recordsToDisplay"
   useEffect(() => {
     const retriveData = async () => {
       const url = "https://api.airtable.com/v0/app8wLQrrIMrnn673";
@@ -40,10 +41,12 @@ function App() {
     return <p>Sorry, there has been an error loading data, please try again later.</p>
   }
 
+  //Creating a table for recent records by creating the table header row using the keys of "recordsToDisplay.fields" 
+  //and the table data cells using the values of "recordsToDisplay.fields"
   const createRecentOrdersTable = (recordsToDisplay) => {
     if (recordsToDisplay) {
-      return (<table class="recent-orders-table">
-        <thead class="recent-records-header">
+      return (<table className="recent-orders-table">
+        <thead className="recent-records-header">
           <RecentOrdersHeaderRow order={recordsToDisplay[0]}/>
         </thead>
         <tbody>
@@ -64,28 +67,28 @@ function App() {
         <h1>Purrfect Creations Order Summary</h1>
       </header>
       <main>
-        <table class="summary-table">
+        <table className="summary-table">
           <tbody>
-          <SummaryTableRow 
-            title="Total Orders"
-            value={getTotalOrders(orders)}
-          />
-          <SummaryTableRow 
-            title="Total Orders This Month"
-            value={getOrdersThisMonth(orders)}
-          />
-          <SummaryTableRow 
-            title="Orders in Progress"
-            value={getOrdersInProgress(orders)}
-          />          
-          <SummaryTableRow 
-            title="Revenue"
-            value={getRevenue(orders)}
-          />         
+            <SummaryTableRow 
+              title="Total Orders"
+              value={getTotalOrders(orders)}
+            />
+            <SummaryTableRow 
+              title="Total Orders This Month"
+              value={getOrdersThisMonth(orders)}
+            />
+            <SummaryTableRow 
+              title="Orders in Progress"
+              value={getOrdersInProgress(orders)}
+            />          
+            <SummaryTableRow 
+              title="Revenue"
+              value={getRevenue(orders)}
+            />         
           </tbody>
         </table>
-        <div class="recent-orders-wrapper">
-          <div class="order-selector-wrapper">
+        <div className="recent-orders-wrapper">
+          <div className="order-selector-wrapper">
             <h2>Recent Orders</h2>
             <select value={selectValue.value} onChange={handleChange}>
               <option value="5">5</option>
@@ -94,7 +97,7 @@ function App() {
               <option value="50">50</option>
             </select>
           </div>
-          <div class="recent-orders-container">
+          <div className="recent-orders-container">
             {recordsToDisplay.length > 0 && createRecentOrdersTable(recordsToDisplay)}
           </div>
         </div>
